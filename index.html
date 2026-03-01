@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+* { margin:0; padding:0; background:#000; }
+iframe { width:100vw; height:100vh; border:none; }
+</style>
+</head>
+<body>
+<iframe id="player" allowfullscreen allow="autoplay"></iframe>
+<script>
+var id = new URLSearchParams(window.location.search).get("v");
+if(id) document.getElementById("player").src =
+    "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1&controls=1";
+</script>
+</body>
+</html>      
