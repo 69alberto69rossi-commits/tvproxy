@@ -12,16 +12,12 @@ iframe { width:100vw; height:100vh; border:none; }
 <script>
 var params = new URLSearchParams(window.location.search);
 var id = params.get("v");
-var dur = params.get("dur");
 
 if(id) {
     document.getElementById("player").src =
         "https://www.youtube-nocookie.com/embed/" + id +
-        "?autoplay=1&controls=1&mute=1&fs=1&rel=0";
+        "?autoplay=1&controls=1&fs=1&rel=0";
 }
-
-// Dopo la durata specificata segnala fine video cambiando il titolo
-// che lo script LSL non puo leggere, quindi usiamo solo il timer lato LSL
 </script>
 </body>
 </html>
