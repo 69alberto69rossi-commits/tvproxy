@@ -4,85 +4,27 @@
 <meta charset="utf-8">
 <style>
 * { margin:0; padding:0; background:#000; }
-#player { width:100vw; height:100vh; }
+iframe { width:100vw; height:100vh; border:none; }
 </style>
 </head>
 <body>
-<div id="player"></div>
+<iframe id="player" allowfullscreen allow="autoplay"></iframe>
 <script>
-var tag = document.createElement("script");
-tag.src = "https://www.youtube.com/iframe_api";
-document.head.appendChild(tag);
-
 var params = new URLSearchParams(window.location.search);
-var videoId = params.get("v");
-var player;
+var v = params.get("v");
+var list = params.get("list");
 
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player("player", {
-        width: "100%",
-        height: "100%",
-        videoId: videoId,
-        playerVars: {
-            autoplay: 1,
-            controls: 1,
-            rel: 0,
-            fs: 1,
-            iv_load_policy: 3,
-            modestbranding: 1
-        },
-        events: {
-            onStateChange: onPlayerStateChange,
-            onAdStart: onAdStart
-        }
-    });
+var src = "https://www.youtube-nocookie.com/embed/";
+
+if(v && list) {
+    src += v + "?list=" + list + "&autoplay=1&controls=1&fs=1&rel=0";
+} else if(list) {
+    src += "videoseries?list=" + list + "&autoplay=1&controls=1&fs=1&rel=0";
+} else if(v) {
+    src += v + "?autoplay=1&controls=1&fs=1&rel=0";
 }
 
-function onAdStart(event) {
-    // Tenta di saltare la pubblicita non appena appare
-    setTimeout(function() {
-        var skipBtn = document.querySelector(".ytp-ad-skip-button");
-        if(skipBtn) skipBtn.click();
-    }, 1000);
-    setTimeout(function() {
-        var skipBtn = document.querySelector(".ytp-ad-skip-button");
-        if(skipBtn) skipBtn.click();
-    }, 2000);
-    setTimeout(function() {
-        var skipBtn = document.querySelector(".ytp-ad-skip-button");
-        if(skipBtn) skipBtn.click();
-    }, 5000);
-}
-
-function onPlayerStateChange(event) {
-    // Stato 0 = video finito
-    if(event.data === 0) {
-        // Qui potremmo notificare la TV ma LSL non puo ricevere notifiche
-    }
-    // Tenta skip pubblicita ogni secondo quando il player e in stato -1 o 3
-    if(event.data === 3 || event.data === -1) {
-        setTimeout(trySkipAd, 1000);
-    }
-}
-
-function trySkipAd() {
-    var skipBtn = document.querySelector(".ytp-ad-skip-button");
-    if(skipBtn) {
-        skipBtn.click();
-        return;
-    }
-    // Controlla se c'e una pubblicita non skippabile e aspetta
-    var adBadge = document.querySelector(".ytp-ad-badge");
-    if(adBadge) {
-        setTimeout(trySkipAd, 1000);
-    }
-}
-
-// Controlla la pubblicita ogni 2 secondi
-setInterval(function() {
-    var skipBtn = document.querySelector(".ytp-ad-skip-button");
-    if(skipBtn) skipBtn.click();
-}, 2000);
+document.getElementById("player").src = src;
 </script>
 </body>
 </html>
