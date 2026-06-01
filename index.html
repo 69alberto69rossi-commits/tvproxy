@@ -24,18 +24,6 @@ if(v && list) {
 }
 
 document.getElementById("player").src = src;
-
-// Click automatico sul pulsante Salta annuncio
-setInterval(function() {
-    var iframe = document.getElementById("player");
-    try {
-        var doc = iframe.contentDocument || iframe.contentWindow.document;
-        var skipBtn = doc.querySelector(".ytp-ad-skip-button");
-        if(skipBtn) skipBtn.click();
-        var skipBtn2 = doc.querySelector(".ytp-skip-ad-button");
-        if(skipBtn2) skipBtn2.click();
-    } catch(e) {}
-}, 500);
 </script>
 </body>
 </html>
